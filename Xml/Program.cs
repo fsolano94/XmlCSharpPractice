@@ -50,7 +50,7 @@ namespace Xml
 
             Console.WriteLine($"Xml successfully saved at: {filePathAndName}.");
 
-            ChangeXmlNode(fileName, 3);
+            ModifyDateElementWithSpecifiedId(fileName, 4, "Day", "SomeNewTestDay");
 
             Console.ReadLine();
         }
@@ -87,15 +87,16 @@ namespace Xml
             }
         }
 
-        public static void ChangeXmlNode(string fileName, int id)
+
+        public static void ModifyDateElementWithSpecifiedId(string filePathAndNameOfXmlDocument, int idOfElement, string nameOfElementToModify, string newValueOfElement)
         {
-            var xmlDocument = XDocument.Load(fileName);
+            var xmlDocument = XDocument.Load(filePathAndNameOfXmlDocument);
 
             xmlDocument.Descendants("Date")
-                .FirstOrDefault(element => element.Element("Id")?.Value == Convert.ToString(id))
-                .SetElementValue("Year", "1234");
+                .FirstOrDefault(element => element.Element("Id")?.Value == Convert.ToString(idOfElement))
+                .SetElementValue(nameOfElementToModify, newValueOfElement);
 
-            xmlDocument.Save(fileName);
+            xmlDocument.Save(filePathAndNameOfXmlDocument);
         }
     }
 }
