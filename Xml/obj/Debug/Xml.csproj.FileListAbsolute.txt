@@ -1,0 +1,7 @@
+C:\Users\fsola\Source\Repos\Xml\Xml\bin\Debug\Xml.exe.config
+C:\Users\fsola\Source\Repos\Xml\Xml\bin\Debug\Xml.exe
+C:\Users\fsola\Source\Repos\Xml\Xml\bin\Debug\Xml.pdb
+C:\Users\fsola\Source\Repos\Xml\Xml\obj\Debug\Xml.csproj.CoreCompileInputs.cache
+C:\Users\fsola\Source\Repos\Xml\Xml\obj\Debug\Xml.exe
+C:\Users\fsola\Source\Repos\Xml\Xml\obj\Debug\Xml.pdb
+C:\Users\fsola\Source\Repos\Xml\Xml\obj\Debug\Xml.csprojResolveAssemblyReference.cache
