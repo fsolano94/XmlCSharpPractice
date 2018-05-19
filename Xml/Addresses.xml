@@ -2,45 +2,63 @@
 <!--All addresses found.-->
 <Addresses>
   <Address id="1">
+    <state>Washington</state>
+    <city>Seattle</city>
+    <zipcode>10293</zipcode>
+    <population>102938</population>
+  </Address>
+  <Address id="2">
+    <state>Colorado</state>
+    <city>Denver</city>
+    <zipcode>09876</zipcode>
+    <population>123456</population>
+  </Address>
+  <Address id="3">
     <state>NV</state>
     <city>Reno</city>
     <zipcode>89557</zipcode>
     <population>2900000</population>
   </Address>
-  <Address id="2">
+  <Address id="4">
     <state>CA</state>
     <city>San Francisco</city>
     <zipcode>94016</zipcode>
     <population>39540000</population>
   </Address>
-  <Address id="3">
+  <Address id="5">
     <state>MN</state>
     <city>Saint Paul</city>
     <zipcode>55101</zipcode>
     <population>5577000</population>
   </Address>
-  <Address id="4">
+  <Address id="6">
     <state>TX</state>
     <city>Austin</city>
     <zipcode>73301</zipcode>
     <population>28300000</population>
   </Address>
-  <Address id="5">
+  <Address id="7">
     <state>NE</state>
     <city>Lincoln</city>
     <zipcode>68501</zipcode>
     <population>1920000</population>
   </Address>
-  <Address id="6">
+  <Address id="8">
     <state>MI</state>
     <city>Lansing</city>
     <zipcode>48864</zipcode>
     <population>9962000</population>
   </Address>
-  <Address id="7">
+  <Address id="9">
     <state>MA</state>
     <city>Boston</city>
     <zipcode>02101</zipcode>
     <population>6860000</population>
+  </Address>
+  <Address id="10">
+    <state>Wyoming</state>
+    <city>Cheyenne</city>
+    <zipcode>82001</zipcode>
+    <population>64019</population>
   </Address>
 </Addresses>

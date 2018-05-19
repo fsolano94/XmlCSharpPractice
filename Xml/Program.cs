@@ -18,6 +18,34 @@ namespace Xml
         public string Year { get; set; } = DateTime.Now.Year.ToString();
     }
 
+    public class Address
+    {
+        [XmlAttribute("id")]
+        public int Id { get; set; }
+        [XmlElement("state")]
+        public string State { get; set; }
+        [XmlElement("city")]
+        public string City { get; set; }
+        [XmlElement("zipcode")]
+        public string ZipCode { get; set; }
+        [XmlElement("population")]
+        public int Population { get; set; }
+        /// <summary>
+        /// Parameterless ctor needed for xml serialization
+        /// </summary>
+        public Address()
+        {
+
+        }
+        public Address(string s, string c, string z, int p)
+        {
+            State = s;
+            City = c;
+            ZipCode = z;
+            Population = p;
+        }
+    }
+
     public class Book
     {
         public string Author { get; set; }
@@ -40,14 +68,15 @@ namespace Xml
     }
 
 
+
     class Program
     {
+        public const string ADDRESS_FILE = @"C:\Users\fsola\Source\Repos\Xml\Xml\Addresses.xml";
+
 
         static void Main(string[] args)
         {
-            PrintPopulationOfStatesFromAddressesFileInDescendingOrder();
-
-            Console.ReadLine();
+            AddNewAddressToBeginningOfFile();
         }
 
         public static void Test_1()
@@ -222,6 +251,187 @@ namespace Xml
             Console.ReadLine();
         }
 
+        public static void AppendNewAddressToAddressesFile(string state, string city, string zipcode, int population)
+        {
+            try
+            {
+                Console.WriteLine("Now inserting new address to Addresses.xml file ...");
+
+                int newAddressId = Convert.ToInt32(XDocument.Load(@"C:\Users\fsola\Source\Repos\Xml\Xml\Addresses.xml")
+                    .Descendants("Address").Last().Attribute("id").Value) + 1;
+
+                var addressesDocument = XDocument.Load(@"C:\Users\fsola\Source\Repos\Xml\Xml\Addresses.xml");
+
+                addressesDocument
+                    .Element("Addresses")
+                    .Add(
+                        new XElement(
+                                "Address",
+                                new XAttribute("id", newAddressId),
+                                new XElement("state", state),
+                                new XElement("city", city),
+                                new XElement("zipcode", zipcode),
+                                new XElement("population", population)
+
+                                )
+                        );
+
+                addressesDocument.Save(@"C:\Users\fsola\Source\Repos\Xml\Xml\Addresses.xml");
+
+                Console.WriteLine("Successfully appended new address to addresses file.");
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+            Console.ReadLine();
+        }
+
+        public static XElement ConvertAddressToXElement(Address address)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                using (TextWriter streamWriter = new StreamWriter(memoryStream))
+                {
+                    var xmlSerializer = new XmlSerializer(typeof(Address));
+                    var xmlSerializationNameSpaces = new XmlSerializerNamespaces();
+                    xmlSerializationNameSpaces.Add("", "");
+                    xmlSerializer.Serialize(streamWriter, address, xmlSerializationNameSpaces);
+                    return XElement.Parse(Encoding.ASCII.GetString(memoryStream.ToArray()));
+                }
+            }
+        }
+
+        public static void AddNewAddressToBeginningOfFile()
+        {
+            var newAddressToAdd = GetAddressInformation();
+            newAddressToAdd.Id = 1;
+
+            var newAddressToAddAsXElement = ConvertAddressToXElement(newAddressToAdd);
+
+            IncrementIdOfAllAddressesStartingAt(1);
+
+            try
+            {
+                var addressesDocument = XDocument.Load(ADDRESS_FILE);
+
+                Console.WriteLine("Now adding new address to beginning of file ...");
+
+                addressesDocument.Element("Addresses").AddFirst(newAddressToAddAsXElement);
+
+                addressesDocument.Save(ADDRESS_FILE);
+
+                Console.WriteLine("Successfully added new address to beginning of file.");
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+            Console.ReadLine();
+        }
+
+        public static void IncrementIdOfAllAddressesStartingAt(int idOfAddressToStartAt)
+        {
+            try
+            {
+                Console.WriteLine($"Incrementing id's of all addresses starting at address id {idOfAddressToStartAt}.");
+
+                var addressDocument = XDocument.Load(ADDRESS_FILE);
+
+                var addressIds = addressDocument.Descendants("Address").Attributes("id").ToList();
+
+                foreach (var addressId in addressIds)
+                {
+                    addressId.SetValue(Convert.ToInt32(addressId.Value) + 1);
+                }
+                    
+                addressDocument.Save(ADDRESS_FILE);
+
+                Console.WriteLine($"Successfully incremented the id of each address after and including {idOfAddressToStartAt}.");
+
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+            Console.ReadLine();
+        }
+
+        public static void DecrementIdOfAllAddressesStartingAt(int idOfAddressToStartAt)
+        {
+            try
+            {
+                Console.WriteLine($"Incrementing id's of all addresses starting at address id {idOfAddressToStartAt}.");
+
+                var addressDocument = XDocument.Load(ADDRESS_FILE);
+
+                var addressIds = addressDocument.Descendants("Address").Attributes("id").ToList();
+
+                foreach (var addressId in addressIds)
+                {
+                    addressId.SetValue(Convert.ToInt32(addressId.Value) - 1);
+                }
+
+                addressDocument.Save(ADDRESS_FILE);
+
+                Console.WriteLine($"Successfully incremented the id of each address after and including {idOfAddressToStartAt}.");
+
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+            Console.ReadLine();
+        }
+
+        public static void Test_IncrementIdOfAllAddressesStartingAt()
+        {
+            Console.Write("Enter id of address to start incrementing at: ");
+
+            var idToStartIncrementingAt = Convert.ToInt32(Console.ReadLine());
+
+            IncrementIdOfAllAddressesStartingAt(idToStartIncrementingAt);
+
+        }
+
+        public static void Test_DecrementIdOfAllAddressesStartingAt()
+        {
+            Console.Write("Enter id of address to start decrementing at: ");
+
+            var idToStartIncrementingAt = Convert.ToInt32(Console.ReadLine());
+
+            DecrementIdOfAllAddressesStartingAt(idToStartIncrementingAt);
+
+        }
+
+        public static Address GetAddressInformation()
+        {
+            Console.Write("Enter state: ");
+            var state = Console.ReadLine();
+            Console.Write("Enter city: ");
+            var city = Console.ReadLine();
+            Console.Write("Enter zipcode: ");
+            var zipcode = Console.ReadLine();
+            Console.Write("Enter city population: ");
+            var population = Console.ReadLine();
+
+            return new Address(state, city, zipcode, Convert.ToInt32(population));
+        }
+
+        public static void Test_AppendNewAddressToAddressesFile()
+        {
+            Console.Write("Enter state: ");
+            var state = Console.ReadLine();
+            Console.Write("Enter city: ");
+            var city = Console.ReadLine();
+            Console.Write("Enter zipcode: ");
+            var zipcode = Console.ReadLine();
+            Console.Write("Enter city population: ");
+            var population = Console.ReadLine();
+
+            AppendNewAddressToAddressesFile(state, city, zipcode, Convert.ToInt32(population));
+        }
+
         public static void PrintNameOf3OutOf7StatesInAddressesFileWithHighestPopulationInDescendingOrder()
         {
             var states = XDocument.Load(@"C:\Users\fsola\Source\Repos\Xml\Xml\Addresses.xml").Descendants("Address")
@@ -321,8 +531,6 @@ namespace Xml
             {
                 Console.WriteLine($"Title of book {index}: {bookTitles[index-1]}.");
             }
-
-            
         }
 
     }
