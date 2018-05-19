@@ -45,7 +45,7 @@ namespace Xml
 
         static void Main(string[] args)
         {
-            PrintNameOf3OutOf7StatesInAddressesFileWithHighestPopulationInDescendingOrder();
+            PrintPopulationOfStatesFromAddressesFileInDescendingOrder();
 
             Console.ReadLine();
         }
@@ -224,7 +224,6 @@ namespace Xml
 
         public static void PrintNameOf3OutOf7StatesInAddressesFileWithHighestPopulationInDescendingOrder()
         {
-            
             var states = XDocument.Load(@"C:\Users\fsola\Source\Repos\Xml\Xml\Addresses.xml").Descendants("Address")
                          .OrderBy(address => Convert.ToUInt64(address.Element("population").Value)).Reverse().Take(3).Select(foundAddress => foundAddress.Element("state").Value);
 
@@ -237,6 +236,17 @@ namespace Xml
 
         }
 
+        public static void PrintPopulationOfStatesFromAddressesFileInDescendingOrder()
+
+        {
+            var populations = XDocument.Load(@"C:\Users\fsola\Source\Repos\Xml\Xml\Addresses.xml").Descendants("Address")
+                         .OrderBy(address => Convert.ToUInt64(address.Element("population").Value)).Reverse().Select(foundAddress => Convert.ToUInt64(foundAddress.Element("population").Value));
+            Console.WriteLine("Population of 7 states from Address.xml file");
+            foreach (var population in populations)
+            {
+                Console.WriteLine(population);
+            }
+        }
         public static void Test_CreateXmlDocument()
         {
             string fileName = string.Empty;
