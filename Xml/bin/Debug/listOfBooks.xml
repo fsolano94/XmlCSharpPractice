@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--This list of books was made up for learning how to make this file :)-->
+<Books>
+  <Book>
+    <Author>Robert C. Martin</Author>
+    <DatePublished>Aug. 1999</DatePublished>
+    <Genre>Arch.</Genre>
+    <Title>CleanCode</Title>
+    <Rating>10</Rating>
+  </Book>
+  <Book>
+    <Author>Martin Fowler</Author>
+    <DatePublished>Sept. 2000</DatePublished>
+    <Genre>Arch.</Genre>
+    <Title>Refactoring</Title>
+    <Rating>9</Rating>
+  </Book>
+  <Book>
+    <Author>Gregor Hohpe</Author>
+    <DatePublished>Oct. 2010</DatePublished>
+    <Genre>Design Patterns</Genre>
+    <Title>Enterprise Software</Title>
+    <Rating>8</Rating>
+  </Book>
+  <Book>
+    <Author>Eric Evans</Author>
+    <DatePublished>Jan. 2017</DatePublished>
+    <Genre>DDD</Genre>
+    <Title>Tackling DDD</Title>
+    <Rating>7</Rating>
+  </Book>
+</Books>
