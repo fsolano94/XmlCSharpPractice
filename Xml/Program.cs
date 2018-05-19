@@ -45,13 +45,14 @@ namespace Xml
 
         static void Main(string[] args)
         {
-            Test_QueryXmlFile();
-           
+            PrintNameOf3OutOf7StatesInAddressesFileWithHighestPopulationInDescendingOrder();
+
             Console.ReadLine();
         }
 
         public static void Test_1()
         {
+
             string fileName = "abc.xml";
 
             List<Date> dates = new List<Date>();
@@ -142,6 +143,98 @@ namespace Xml
             xmlDocument.Save(fullPathToXmlFileThatWillBeCreated);
 
             Console.WriteLine("File created successfully.");
+        }
+
+        public static void Test_CreateXmlFileOfAddresses()
+        {
+            Console.WriteLine("Creating xml file containing addresses ...");
+            try
+            {
+
+                XDocument xmlDocumentOfAddresses = new XDocument(
+                    new XDeclaration("1.0", "utf-8", "yes"),
+                    new XComment("All addresses found."),
+                    new XElement("Addresses",
+
+                        new XElement("Address",
+                            new XAttribute("id", 1),
+                            new XElement("state", "NV"),
+                            new XElement("city", "Reno"),
+                            new XElement("zipcode", "89557"),
+                            new XElement("population", 2900000)
+                                    ),
+
+                        new XElement("Address",
+                            new XAttribute("id", 2),
+                            new XElement("state", "CA"),
+                            new XElement("city", "San Francisco"),
+                            new XElement("zipcode", "94016"),
+                            new XElement("population", 39540000)
+                                    ),
+
+                        new XElement("Address",
+                            new XAttribute("id", 3),
+                            new XElement("state", "MN"),
+                            new XElement("city", "Saint Paul"),
+                            new XElement("zipcode", "55101"),
+                            new XElement("population", 5577000)
+                                    ),
+
+                        new XElement("Address",
+                            new XAttribute("id", 4),
+                            new XElement("state", "TX"),
+                            new XElement("city", "Austin"),
+                            new XElement("zipcode", "73301"),
+                            new XElement("population", 28300000)
+                                    ),
+                        new XElement("Address",
+                            new XAttribute("id", 5),
+                            new XElement("state", "NE"),
+                            new XElement("city", "Lincoln"),
+                            new XElement("zipcode", "68501"),
+                            new XElement("population", 1920000)
+                                    ),
+
+                        new XElement("Address",
+                            new XAttribute("id", 6),
+                            new XElement("state", "MI"),
+                            new XElement("city", "Lansing"),
+                            new XElement("zipcode", "48864"),
+                            new XElement("population", 9962000)
+                                    ),
+
+                        new XElement("Address",
+                            new XAttribute("id", 7),
+                            new XElement("state", "MA"),
+                            new XElement("city", "Boston"),
+                            new XElement("zipcode", "02101"),
+                            new XElement("population", 6860000)
+                                    )
+                    ));
+
+                xmlDocumentOfAddresses.Save(@"C:\Users\fsola\Source\Repos\Xml\Xml\Addresses.xml");
+                Console.WriteLine("Addresses.xml file created successfully.");
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+            Console.ReadLine();
+        }
+
+        public static void PrintNameOf3OutOf7StatesInAddressesFileWithHighestPopulationInDescendingOrder()
+        {
+            
+            var states = XDocument.Load(@"C:\Users\fsola\Source\Repos\Xml\Xml\Addresses.xml").Descendants("Address")
+                         .OrderBy(address => Convert.ToUInt64(address.Element("population").Value)).Reverse().Take(3).Select(foundAddress => foundAddress.Element("state").Value);
+
+            Console.WriteLine("3 of the 7 states from Addresses.xml file with the greatest population in descending order: ");
+
+            foreach (var state in states)
+            {
+                Console.WriteLine(state);
+            }
+
         }
 
         public static void Test_CreateXmlDocument()
