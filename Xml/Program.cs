@@ -76,7 +76,9 @@ namespace Xml
 
         static void Main(string[] args)
         {
-            DecrementIdOfAllAddressesStartingAt(6);
+            //Test_CreateXmlFileOfAddresses();
+            //Test_AddNewAddressBeforeAddressWithId();
+            Test_AddNewAddressAfterAddressWithId();
         }
 
         public static void Test_1()
@@ -366,18 +368,39 @@ namespace Xml
 
         public static void AddNewAddressBeforeAddressWithId(int id)
         {
+            IncrementIdOfAllAddressesStartingAt(id);
+
             var addressDocument = XDocument.Load(ADDRESS_FILE);
 
             var newAddress = GetAddressInformation();
 
             newAddress.Id = id;
 
-            IncrementIdOfAllAddressesStartingAt(id);
-
-            addressDocument.Descendants("Address").FirstOrDefault(address => Convert.ToInt32(address.Attribute("id").Value) == (id+1)).AddBeforeSelf(newAddress);
+            addressDocument.Descendants("Address").Where(address => Convert.ToInt32(address.Attribute("id").Value) == (id + 1)).FirstOrDefault().AddBeforeSelf(ConvertAddressToXElement(newAddress));
 
             addressDocument.Save(ADDRESS_FILE);
 
+        }
+
+        public static void AddNewAddressAfterAddressWithId(int id)
+        {
+            DecrementIdOfAllAddressesStartingAt(id+1);
+
+            var newAddress = GetAddressInformation();
+            newAddress.Id = id + 1;
+
+            var document = XDocument.Load(ADDRESS_FILE);
+
+            document.Descendants("Address").Where(address => Convert.ToInt32(address.Attribute("id").Value) == id).FirstOrDefault().AddAfterSelf(ConvertAddressToXElement(newAddress));
+
+            document.Save(ADDRESS_FILE);
+        }
+
+        public static void Test_AddNewAddressAfterAddressWithId()
+        {
+            Console.Write("Enter id of address to add new address after: ");
+            int id = Convert.ToInt32(Console.ReadLine());
+            AddNewAddressAfterAddressWithId(id);
         }
 
         public static void Test_AddNewAddressBeforeAddressWithId()

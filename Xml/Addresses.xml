@@ -8,22 +8,34 @@
     <population>2900000</population>
   </Address>
   <Address id="2">
+    <state>s2</state>
+    <city>c2</city>
+    <zipcode>z2</zipcode>
+    <population>99</population>
+  </Address>
+  <Address id="1">
     <state>CA</state>
     <city>San Francisco</city>
     <zipcode>94016</zipcode>
     <population>39540000</population>
   </Address>
-  <Address id="3">
+  <Address id="2">
     <state>MN</state>
     <city>Saint Paul</city>
     <zipcode>55101</zipcode>
     <population>5577000</population>
   </Address>
-  <Address id="4">
+  <Address id="3">
     <state>TX</state>
     <city>Austin</city>
     <zipcode>73301</zipcode>
     <population>28300000</population>
+  </Address>
+  <Address id="4">
+    <state>state1</state>
+    <city>city1</city>
+    <zipcode>00000</zipcode>
+    <population>99999</population>
   </Address>
   <Address id="5">
     <state>NE</state>
