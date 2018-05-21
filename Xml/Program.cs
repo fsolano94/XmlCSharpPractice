@@ -76,7 +76,7 @@ namespace Xml
 
         static void Main(string[] args)
         {
-            AddNewAddressToBeginningOfFile();
+            DecrementIdOfAllAddressesStartingAt(6);
         }
 
         public static void Test_1()
@@ -340,9 +340,16 @@ namespace Xml
 
                 var addressIds = addressDocument.Descendants("Address").Attributes("id").ToList();
 
-                foreach (var addressId in addressIds)
+                int indexOfAddressToStartAt = addressIds.FindIndex(address => Convert.ToInt32(address.Value) == idOfAddressToStartAt);
+
+                if (indexOfAddressToStartAt == -1)
                 {
-                    addressId.SetValue(Convert.ToInt32(addressId.Value) + 1);
+                    throw new Exception("Invalid id specified.");
+                }
+
+                for(int currentAttribute = indexOfAddressToStartAt; currentAttribute < addressIds.Count; currentAttribute++)
+                {
+                    addressIds[currentAttribute].SetValue(Convert.ToInt32(addressIds[currentAttribute].Value) + 1);
                 }
                     
                 addressDocument.Save(ADDRESS_FILE);
@@ -357,6 +364,31 @@ namespace Xml
             Console.ReadLine();
         }
 
+        public static void AddNewAddressBeforeAddressWithId(int id)
+        {
+            var addressDocument = XDocument.Load(ADDRESS_FILE);
+
+            var newAddress = GetAddressInformation();
+
+            newAddress.Id = id;
+
+            IncrementIdOfAllAddressesStartingAt(id);
+
+            addressDocument.Descendants("Address").FirstOrDefault(address => Convert.ToInt32(address.Attribute("id").Value) == (id+1)).AddBeforeSelf(newAddress);
+
+            addressDocument.Save(ADDRESS_FILE);
+
+        }
+
+        public static void Test_AddNewAddressBeforeAddressWithId()
+        {
+            Console.Write("Enter id of address to add new address before: ");
+            int id = Convert.ToInt32(Console.ReadLine());
+
+            AddNewAddressBeforeAddressWithId(id);
+
+        }
+
         public static void DecrementIdOfAllAddressesStartingAt(int idOfAddressToStartAt)
         {
             try
@@ -367,9 +399,16 @@ namespace Xml
 
                 var addressIds = addressDocument.Descendants("Address").Attributes("id").ToList();
 
-                foreach (var addressId in addressIds)
+                var indexOfAddressToStartAt = addressIds.FindIndex(address => Convert.ToInt32(address.Value) == idOfAddressToStartAt);
+
+                if (indexOfAddressToStartAt == -1)
                 {
-                    addressId.SetValue(Convert.ToInt32(addressId.Value) - 1);
+                    throw new Exception("Invalid address id.");
+                }
+
+                for (int currentAttribute = indexOfAddressToStartAt; currentAttribute < addressIds.Count; currentAttribute++)
+                {
+                    addressIds[currentAttribute].SetValue(Convert.ToInt32(addressIds[currentAttribute].Value) - 1);
                 }
 
                 addressDocument.Save(ADDRESS_FILE);
